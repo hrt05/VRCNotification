@@ -1,1 +1,1 @@
-# VRChatNotification
+# VRCNotification
