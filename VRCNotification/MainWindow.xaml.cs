@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Media;
 
-namespace VRChatNotification
+namespace VRCNotification
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
