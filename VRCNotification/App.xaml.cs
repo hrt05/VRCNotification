@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Windows;
+using Velopack;
 
 namespace VRCNotification
 {
@@ -8,10 +9,13 @@ namespace VRCNotification
     /// </summary>
     public partial class App : Application
     {
-        private static Mutex _mutex;
+        private static Mutex? _mutex;
+        bool CheckWindow;
+
         protected override void OnStartup(StartupEventArgs e)
         {
-            bool CheckWindow;
+            VelopackApp.Build().Run();
+
             _mutex = new Mutex(true, "UniqueAppName_Mutex", out CheckWindow);
 
             if (!CheckWindow)
