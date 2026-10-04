@@ -1,5 +1,12 @@
 # VRCNotification
 
+[![Release](https://img.shields.io/github/v/release/hrt05/VRCNotification)](https://github.com/hrt05/VRCNotification/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/hrt05/VRCNotification/total)](https://github.com/hrt05/VRCNotification/releases)
+[![License](https://img.shields.io/github/license/hrt05/VRCNotification)](LICENSE)
+[![.NET](https://img.shields.io/badge/.NET-10.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
+[![Platform](https://img.shields.io/badge/platform-Windows-0078D6)](#動作環境)
+[![X](https://img.shields.io/badge/X-@roko4649VR-000000?logo=x)](https://x.com/roko4649VR)
+
 VRChat のインスタンスにユーザーが参加・退出したときに、通知音を鳴らす Windows 用のデスクトップアプリです。
 
 インスタンスの種類（パブリック、フレンド、インバイトなど）ごとに、通知音を鳴らすかどうかを切り替えられます。<br/>
