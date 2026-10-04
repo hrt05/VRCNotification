@@ -1,4 +1,4 @@
-﻿namespace VRChatNotification
+﻿namespace VRCNotification
 {
     internal class InstanceTypeClass
     {

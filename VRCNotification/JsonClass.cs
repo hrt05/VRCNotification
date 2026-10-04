@@ -2,7 +2,7 @@
 //using System.Collections.Generic;
 //using System.Text;
 
-//namespace VRChatNotification
+//namespace VRCNotification
 //{
 //    internal class JsonClass
 //    {

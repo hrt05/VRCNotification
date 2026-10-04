@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 
-namespace VRChatNotification
+namespace VRCNotification
 {
     /// <summary>
     /// Interaction logic for App.xaml
