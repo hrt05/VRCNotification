@@ -34,4 +34,9 @@
     </Resource>
   </ItemGroup>
 
+  <ItemGroup>
+	<Content Include="..\LICENSE" CopyToOutputDirectory="PreserveNewest" />
+	<Content Include="..\THIRD-PARTY-NOTICES.md" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>
