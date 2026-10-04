@@ -22,6 +22,7 @@ namespace VRCNotification
             {
                 MessageBox.Show("このアプリケーションは起動済みです。");
                 Application.Current.Shutdown();
+                return;
             }
 
             base.OnStartup(e);
@@ -29,7 +30,10 @@ namespace VRCNotification
 
         protected override void OnExit(ExitEventArgs e)
         {
-            _mutex?.ReleaseMutex();
+            if (CheckWindow)
+            {
+                _mutex?.ReleaseMutex();
+            }
             base.OnExit(e);
         }
     }
