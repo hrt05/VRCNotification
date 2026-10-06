@@ -15,7 +15,7 @@ namespace VRCNotification
         public MainWindow()
         {
             InitializeComponent();
-            checkJson();
+            CheckJson();
             ApplySelectColors();
             _isLoading = true;
             if (Process.GetProcessesByName("VRChat").Length > 0)
@@ -62,14 +62,12 @@ namespace VRCNotification
         // 音楽の再生準備
         private void PlayJoinSound()
         {
-            Debug.WriteLine("ここ疎通確認。2");
             _player.Open(new Uri(_joinSoundPath));
             _player.Play();
         }
 
         private void PlayLeftSound()
         {
-            Debug.WriteLine("ここ疎通確認。3");
             _player.Open(new Uri(_leftSoundPath));
             _player.Play();
         }
@@ -102,7 +100,6 @@ namespace VRCNotification
                 _cts?.Cancel();
                 _ctsProcess?.Cancel();
                 _interrupt = false;
-                Debug.WriteLine("今中断しました");
                 currentInstanceText.Text = "停止中";
             }
             else if (_interrupt == false)
@@ -112,7 +109,6 @@ namespace VRCNotification
                 _readFileTask = Task.Run(() => ReadFile());
                 Task.Run(() => CheckProcess());
                 _interrupt = true;
-                Debug.WriteLine("今再開しました");
             }
             else
             {
@@ -123,7 +119,6 @@ namespace VRCNotification
         // スライダーを調整して、0~100を1/10にしています。
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            Debug.WriteLine("現在の値" + e.NewValue);
             _player.Volume = e.NewValue / 100;
             if (!_isLoading)
             {
@@ -131,7 +126,7 @@ namespace VRCNotification
             }
             currentVolumeText.Text = $"{e.NewValue:0}%";
             _selectClass.CurrentVolume = (int)Math.Round(e.NewValue);
-            changeJson();
+            ChangeJson();
         }
 
         private FileInfo? LatestRogFile()
@@ -196,7 +191,7 @@ namespace VRCNotification
 
             if (line.Contains("[Behaviour] Joining wrld_"))
             {
-                mutualInstanceType(line);
+                MutualInstanceType(line);
 
                 return;
             }
@@ -215,7 +210,7 @@ namespace VRCNotification
             }
         }
 
-        private void mutualInstanceType(string line)
+        private void MutualInstanceType(string line)
         {
             currentInstance = _instanceTypeClass.instanceTypeClassDef(line);
 
@@ -266,7 +261,6 @@ namespace VRCNotification
 
                 if (latestF == default || latestF == null)
                 {
-                    Debug.WriteLine("ログファイルが見つかりません");
                     MessageBox.Show("ログファイルが見つかりません");
                     return;
                 }
@@ -284,7 +278,6 @@ namespace VRCNotification
                 string? firstLine;
                 while ((firstLine = sr.ReadLine()) != null)
                 {
-                    Debug.WriteLine(firstLine);
                     FirstLogDef(firstLine);
 
                     if (firstLine.Contains("[Behaviour] Joining wrld_"))
@@ -293,7 +286,7 @@ namespace VRCNotification
                     }
                 }
 
-                mutualInstanceType(_wasThere);
+                MutualInstanceType(_wasThere);
 
                 // ここから情報が変わったら処理
                 _cts = new CancellationTokenSource();
@@ -320,7 +313,6 @@ namespace VRCNotification
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("エラーでてます", ex);
                 MessageBox.Show($"エラーが発生しました。{ex}");
             }
         }
@@ -378,6 +370,7 @@ namespace VRCNotification
                         Dispatcher.Invoke(() => currentInstanceText.Text = "VRChat停止中");
                         _isOnline = false;
                         _cts?.Cancel();
+                        await Task.Delay(500, _ctsProcess.Token);
                     }
                 }
             }
@@ -399,17 +392,17 @@ namespace VRCNotification
                 case SelectType.NoSound:
                     publicBtn.Background = joinOnlyColor;
                     _selectClass.SelectPublic = SelectType.JoinOnlySound;
-                    changeJson();
+                    ChangeJson();
                     break;
                 case SelectType.JoinOnlySound:
                     publicBtn.Background = joinLeftColor;
                     _selectClass.SelectPublic = SelectType.JoinLeftSound;
-                    changeJson();
+                    ChangeJson();
                     break;
                 case SelectType.JoinLeftSound:
                     publicBtn.Background = noSoundColor;
                     _selectClass.SelectPublic = SelectType.NoSound;
-                    changeJson();
+                    ChangeJson();
                     break;
             }
         }
@@ -421,17 +414,17 @@ namespace VRCNotification
                 case SelectType.NoSound:
                     groupPublicBtn.Background = joinOnlyColor;
                     _selectClass.SelectGroupPublic = SelectType.JoinOnlySound;
-                    changeJson();
+                    ChangeJson();
                     break;
                 case SelectType.JoinOnlySound:
                     groupPublicBtn.Background = joinLeftColor;
                     _selectClass.SelectGroupPublic = SelectType.JoinLeftSound;
-                    changeJson();
+                    ChangeJson();
                     break;
                 case SelectType.JoinLeftSound:
                     groupPublicBtn.Background = noSoundColor;
                     _selectClass.SelectGroupPublic = SelectType.NoSound;
-                    changeJson();
+                    ChangeJson();
                     break;
             }
         }
@@ -443,17 +436,17 @@ namespace VRCNotification
                 case SelectType.NoSound:
                     groupPlusBtn.Background = joinOnlyColor;
                     _selectClass.SelectGroupPlus = SelectType.JoinOnlySound;
-                    changeJson();
+                    ChangeJson();
                     break;
                 case SelectType.JoinOnlySound:
                     groupPlusBtn.Background = joinLeftColor;
                     _selectClass.SelectGroupPlus = SelectType.JoinLeftSound;
-                    changeJson();
+                    ChangeJson();
                     break;
                 case SelectType.JoinLeftSound:
                     groupPlusBtn.Background = noSoundColor;
                     _selectClass.SelectGroupPlus = SelectType.NoSound;
-                    changeJson();
+                    ChangeJson();
                     break;
             }
         }
@@ -465,17 +458,17 @@ namespace VRCNotification
                 case SelectType.NoSound:
                     groupBtn.Background = joinOnlyColor;
                     _selectClass.SelectGroup = SelectType.JoinOnlySound;
-                    changeJson();
+                    ChangeJson();
                     break;
                 case SelectType.JoinOnlySound:
                     groupBtn.Background = joinLeftColor;
                     _selectClass.SelectGroup = SelectType.JoinLeftSound;
-                    changeJson();
+                    ChangeJson();
                     break;
                 case SelectType.JoinLeftSound:
                     groupBtn.Background = noSoundColor;
                     _selectClass.SelectGroup = SelectType.NoSound;
-                    changeJson();
+                    ChangeJson();
                     break;
             }
         }
@@ -487,17 +480,17 @@ namespace VRCNotification
                 case SelectType.NoSound:
                     hiddenBtn.Background = joinOnlyColor;
                     _selectClass.SelectHidden = SelectType.JoinOnlySound;
-                    changeJson();
+                    ChangeJson();
                     break;
                 case SelectType.JoinOnlySound:
                     hiddenBtn.Background = joinLeftColor;
                     _selectClass.SelectHidden = SelectType.JoinLeftSound;
-                    changeJson();
+                    ChangeJson();
                     break;
                 case SelectType.JoinLeftSound:
                     hiddenBtn.Background = noSoundColor;
                     _selectClass.SelectHidden = SelectType.NoSound;
-                    changeJson();
+                    ChangeJson();
                     break;
             }
         }
@@ -509,17 +502,17 @@ namespace VRCNotification
                 case SelectType.NoSound:
                     friendsBtn.Background = joinOnlyColor;
                     _selectClass.SelectFriends = SelectType.JoinOnlySound;
-                    changeJson();
+                    ChangeJson();
                     break;
                 case SelectType.JoinOnlySound:
                     friendsBtn.Background = joinLeftColor;
                     _selectClass.SelectFriends = SelectType.JoinLeftSound;
-                    changeJson();
+                    ChangeJson();
                     break;
                 case SelectType.JoinLeftSound:
                     friendsBtn.Background = noSoundColor;
                     _selectClass.SelectFriends = SelectType.NoSound;
-                    changeJson();
+                    ChangeJson();
                     break;
             }
         }
@@ -531,17 +524,17 @@ namespace VRCNotification
                 case SelectType.NoSound:
                     privatePlusBtn.Background = joinOnlyColor;
                     _selectClass.SelectPrivatePlus = SelectType.JoinOnlySound;
-                    changeJson();
+                    ChangeJson();
                     break;
                 case SelectType.JoinOnlySound:
                     privatePlusBtn.Background = joinLeftColor;
                     _selectClass.SelectPrivatePlus = SelectType.JoinLeftSound;
-                    changeJson();
+                    ChangeJson();
                     break;
                 case SelectType.JoinLeftSound:
                     privatePlusBtn.Background = noSoundColor;
                     _selectClass.SelectPrivatePlus = SelectType.NoSound;
-                    changeJson();
+                    ChangeJson();
                     break;
             }
         }
@@ -553,22 +546,22 @@ namespace VRCNotification
                 case SelectType.NoSound:
                     privateBtn.Background = joinOnlyColor;
                     _selectClass.SelectPrivate = SelectType.JoinOnlySound;
-                    changeJson();
+                    ChangeJson();
                     break;
                 case SelectType.JoinOnlySound:
                     privateBtn.Background = joinLeftColor;
                     _selectClass.SelectPrivate = SelectType.JoinLeftSound;
-                    changeJson();
+                    ChangeJson();
                     break;
                 case SelectType.JoinLeftSound:
                     privateBtn.Background = noSoundColor;
                     _selectClass.SelectPrivate = SelectType.NoSound;
-                    changeJson();
+                    ChangeJson();
                     break;
             }
         }
 
-        private void changeJson()
+        private void ChangeJson()
         {
             string jsonString = JsonSerializer.Serialize(_selectClass, new JsonSerializerOptions
             {
@@ -581,7 +574,7 @@ namespace VRCNotification
             File.WriteAllText(Path.Combine(_documentPath, fileName), jsonString);
         }
 
-        private void checkJson()
+        private void CheckJson()
         {
             string jsonPath = Path.Combine(_documentPath, fileName);
             if (!File.Exists(jsonPath))
