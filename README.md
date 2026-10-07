@@ -134,7 +134,7 @@ vpk pack --packId VRCNotification --packVersion 1.0.1 --runtime win-x64 --packDi
 本ツールは無料でお使いいただけます。
 開発を応援していただける方は、BOOTH の支援版をご購入いただけると励みになります（中身は無料版と同じです）。
 
-【BOOTH の URL】
+https://roko4649.booth.pm/items/8951593
 
 ## ライセンス
 
