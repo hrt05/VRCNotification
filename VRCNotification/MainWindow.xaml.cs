@@ -196,7 +196,7 @@ namespace VRCNotification
                 return;
             }
 
-            if (line.Contains("User Authenticated"))
+            if (line.Contains("Preforming post login checks for"))
             {
                 FirstLogDef(line);
 
@@ -239,14 +239,17 @@ namespace VRCNotification
         // 最後の位置確認(もしvrc起動していなかったらOffline表記)
         private void FirstLogDef(string fLine)
         {
-            if (fLine.Contains("User Authenticated"))
+            if (fLine.Contains("Preforming post login checks for"))
             {
-                Match regexName = Regex.Match(fLine, @"User Authenticated: (.+?) \(");
-                Match regexId = Regex.Match(fLine, @"usr_[a-f0-9-]+");
-                if (regexId.Success && regexName.Success)
+                //Match regexName = Regex.Match(fLine, @"User Authenticated: (.+?) \(");
+                //Match regexId = Regex.Match(fLine, @"usr_[a-f0-9-]+");
+
+                var authLogMatch = Regex.Match(fLine, @"checks for (?<name>\S+) \((?<id>usr_[0-9a-fA-F\-]+)\)");
+
+                if (authLogMatch.Success)
                 {
-                    _userName = regexName.Groups[1].Value;
-                    _authUserId = regexId.Value;
+                    _userName = authLogMatch.Groups["name"].Value;
+                    _authUserId = authLogMatch.Groups["id"].Value;
                     Dispatcher.Invoke(() => authUserNameTextBlock.Text = _userName);
                     Dispatcher.Invoke(() => authUserIdTextBlock.Text = _authUserId);
                 }
@@ -368,6 +371,8 @@ namespace VRCNotification
                     {
                         currentInstance = InstanceType.Unknown;
                         Dispatcher.Invoke(() => currentInstanceText.Text = "VRChat停止中");
+                        Dispatcher.Invoke(() => authUserNameTextBlock.Text = "オフライン");
+                        Dispatcher.Invoke(() => authUserIdTextBlock.Text = string.Empty);
                         _isOnline = false;
                         _cts?.Cancel();
                         await Task.Delay(500, _ctsProcess.Token);
